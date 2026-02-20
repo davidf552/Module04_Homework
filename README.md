@@ -42,7 +42,7 @@ renamed as (
         cast(dispatching_base_num as string) as dispatching_base_num,
 
         -- timestamps
-        cast(pickup_datetime as timestamp) as pickup_datetime,  -- lpep = Licensed Passenger Enhancement Program (green taxis)
+        cast(pickup_datetime as timestamp) as pickup_datetime,  
         cast(dropOff_datetime as timestamp) as dropoff_datetime,
 
         -- trip info
@@ -52,7 +52,7 @@ renamed as (
         Affiliated_base_number as af_base_number
         
     from source
-    -- Filter out records with null vendor_id (data quality requirement)
+    
     where dispatching_base_num is not null
 )
 
