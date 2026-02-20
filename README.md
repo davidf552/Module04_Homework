@@ -27,3 +27,35 @@ where service_type = 'Green' and revenue_month >= DATE '2019-10-01'
   AND revenue_month < DATE '2019-11-01'
   group by service_type;
 ```
+
+## Question 6
+
+```sql
+with source as (
+    select * from {{ source('raw', 'fhv_tripdata_2019') }}
+),
+
+renamed as (
+    select
+        -- identifiers
+        
+        cast(dispatching_base_num as string) as dispatching_base_num,
+
+        -- timestamps
+        cast(pickup_datetime as timestamp) as pickup_datetime,  -- lpep = Licensed Passenger Enhancement Program (green taxis)
+        cast(dropOff_datetime as timestamp) as dropoff_datetime,
+
+        -- trip info
+        PUlocationID as pickup_location_id,
+        DOlocationID as dropoff_location_id,
+        SR_Flag as sr_flag,
+        Affiliated_base_number as af_base_number
+        
+    from source
+    -- Filter out records with null vendor_id (data quality requirement)
+    where dispatching_base_num is not null
+)
+
+select count(*) from renamed
+
+```
